@@ -1,0 +1,54 @@
+a, a:hover{
+    text-decoration: none;
+    color: inherit;
+}
+
+.price-product-home{
+    font-weight: bold;
+}
+
+.card-product-home img{
+    height: 200px;
+    width: 200px;
+    display: inline-block;
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+.product-view-img{
+    height: 300px;
+    width: auto;
+    float: right;
+}
+
+.product-view-price{
+    font-weight: bold;
+    font-size: 22px;
+}
+
+.product-view-desc{
+    text-align: justify;
+}
+
+.btn-buy{
+    width: 100%;
+    font-weight: 800;
+    margin-top: 15px;
+}
+
+.error-contact{
+    color: red;
+    font-weight: 800;
+    font-size: 12px;
+}
+
+.success-contact, .failed-contact{
+    display: none;
+}
+
+.en-cours{
+    display: none;
+    font-weight: 800;
+    font-size: 12px;
+}

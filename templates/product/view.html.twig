@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ product.name }} {% endblock %}
+
+{% block body %}
+
+<div class="container mt-5">
+
+    <div class="row">
+        <div class="col-md-4">
+            <img class="product-view-img" src="{{ asset(product.image) }}" alt="">
+        </div>
+
+        <div class="col-md-6">
+            <h2>{{ product.name }}</h2>
+            <hr>
+            <p class="product-view-desc">
+               Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium animi blanditiis debitis dolore dolores harum modi natus nesciunt nostrum porro quam rerum saepe sapiente unde veritatis voluptate, voluptatem voluptates voluptatum.Dignissimos magnam minima neque optio provident quae saepe. Aliquid atque commodi cupiditate debitis dolore earum eligendi, excepturi facilis id iure, laudantium modi nulla officiis, optio quibusdam quisquam suscipit? Impedit, iste.
+            </p>
+            <div class="product-view-price">{{ product.price }} €</div>
+
+            <a href="#form-contact" class="btn btn-primary btn-buy">J'achète</a>
+        </div>
+    </div>
+
+    <div class="row mt-5 mb-5">
+        <div class="col-md-6 offset-md-4">
+
+            <div class="success-contact alert alert-success">Votre message à bien été envoyé</div>
+            <div class="failed-contact alert alert-danger">une erreur est survenue, veuillez réessayer</div>
+
+            {{ form_start(form, {'attr': {'id': 'form-contact'}}) }}
+
+            {{ form_label(form.name,"Nom complet") }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            <div class="error-contact" id="name"></div>
+
+            {{ form_label(form.email,"Email") }}
+            {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+            <div class="error-contact" id="email"></div>
+
+            {{ form_label(form.message,"Message") }}
+            {{ form_widget(form.message, {'attr': {'class': 'form-control','rows':'5'}}) }}
+            <div class="error-contact" id="message"></div>
+
+
+            <div class="en-cours">En cours d'envoi ...</div>
+
+            <button type="submit" class="btn btn-primary mt-2">Envoyer</button>
+
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+
+</div>
+
+
+
+{% endblock %}
+
+{% block javascripts %}
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+
+    <script>
+        $("#form-contact").submit(function (e) {
+            e.preventDefault();
+            $('.error-contact').hide();
+            $('.success-contact').hide();
+            $('.failed-contact').hide();
+            $('.en-cours').show();
+
+            var data = new FormData(this);
+            var product = "{{ product.name }}";
+            data.append("contact[product]",product);
+            var url = "{{ path('product-sendmessage') }}";
+
+            axios.post(url,data).then(function (response) {
+                //console.log(response.data);
+                $('.en-cours').hide();
+                var errors = response.data.errors.violations;
+                var failed = response.data.failed;
+                var success = response.data.success;
+
+                if(errors.length>0){
+                    for(var i=0; i<errors.length;i++){
+                        $('#'+errors[i].propertyPath).text(errors[i].title);
+                        $('#'+errors[i].propertyPath).show();
+
+                    }
+                }
+
+                if(failed){
+                    $('.failed-contact').show();
+                }
+
+                if(success){
+                    $('.success-contact').show();
+                }
+
+            }).catch(error => {
+                console.log(error.message);
+            });
+
+
+
+        })
+    </script>
+
+{% endblock %}

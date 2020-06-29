@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos produits{% endblock %}
+
+{% block body %}
+
+    <div class="container mt-3">
+        <div class="row">
+
+            {% for product in products %}
+            <div class="col-md-4">
+                <a href="{{ path('product-view',{slug: product.slug}) }}">
+                    <div class="card card-product-home mb-3">
+                        <img src="{{ asset(product.image) }}" alt="Card image">
+                        <div class="card-body">
+                            <p class="card-text">{{ product.name }}</p>
+
+                            <div class="price-product-home">{{ product.price }} €</div>
+                        </div>
+
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+
+
+        </div>
+    </div>
+
+
+{% endblock %}
